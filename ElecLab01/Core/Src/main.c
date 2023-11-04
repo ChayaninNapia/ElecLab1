@@ -139,16 +139,25 @@ int main(void)
 
 
 	}
-	  else if (ButtonState == 512) {
+	  else if (ButtonState == 128) {
 	  		num = 0;
-	  		while(ButtonState == 512){
-	  					ButtonMatrixRead();
-	  				}
+	  		while(ButtonState == 128){
+				ButtonMatrixRead();
+			}
 	  		top++;
 	  		myArray[top] = 2;
 
 
 	  	}
+	  else if(ButtonState == 2048){
+
+		  while(ButtonState == 2048)
+		  {
+			  ButtonMatrixRead();
+		  }
+		  top++;
+		  myArray[top] = 3;
+	  }
 	  }
   }
   /* USER CODE END 3 */
