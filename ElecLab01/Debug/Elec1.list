@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00023efa  00000000  00000000  0002ea23  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0000bb09  00000000  00000000  0005291d  2**0
+ 18 .debug_line   0000bb0b  00000000  00000000  0005291d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000e58f7  00000000  00000000  0005e426  2**0
+ 19 .debug_str    000e58f7  00000000  00000000  0005e428  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  20 .debug_frame  00002510  00000000  00000000  00143d20  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -383,10 +383,10 @@ int main(void)
  8000520:	f000 f8aa 	bl	8000678 <MX_GPIO_Init>
   MX_LPUART1_UART_Init();
  8000524:	f000 f85e 	bl	80005e4 <MX_LPUART1_UART_Init>
-  /* USER CODE BEGIN WHILE */
-  while (1)
-   {
+
     /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 	  static uint32_t BTMX_TimeStamp = 0;
 	  if(HAL_GetTick() > BTMX_TimeStamp)
  8000528:	f000 fb36 	bl	8000b98 <HAL_GetTick>
@@ -404,7 +404,7 @@ int main(void)
  8000540:	6013      	str	r3, [r2, #0]
 	  ButtonMatrixRead();
  8000542:	f000 f95b 	bl	80007fc <ButtonMatrixRead>
-   {
+  while(1){
  8000546:	e7ef      	b.n	8000528 <main+0x14>
  8000548:	200000fc 	.word	0x200000fc
 
@@ -860,7 +860,6 @@ static void MX_GPIO_Init(void)
 
 080007fc <ButtonMatrixRead>:
 
-/* USER CODE BEGIN 4 */
 /* USER CODE BEGIN 4 */
 void ButtonMatrixRead(){
  80007fc:	b580      	push	{r7, lr}

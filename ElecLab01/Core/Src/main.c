@@ -2,6 +2,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -13,6 +15,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define MAX_SIZE 4
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,8 +45,10 @@ struct _ButMtx_Struct BMX_R[4] = {
 {GPIOB,GPIO_PIN_10},
 {GPIOA,GPIO_PIN_8}
 };
-
 uint16_t ButtonState = 0;
+int stack[MAX_SIZE];
+int top = -1;
+int password[4] = {6,5,0,9};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,21 +94,19 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-   {
+  while(1){
+
+
     /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 	  static uint32_t BTMX_TimeStamp = 0;
 	  if(HAL_GetTick() > BTMX_TimeStamp)
 	  {
 	  BTMX_TimeStamp = HAL_GetTick() + 25; //next scan in 25 ms
 	  ButtonMatrixRead();
 	  }
-    /* USER CODE BEGIN 3 */
-
-   }
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
+  }
   /* USER CODE END 3 */
 }
 
@@ -276,7 +279,6 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
-/* USER CODE BEGIN 4 */
 /* USER CODE BEGIN 4 */
 void ButtonMatrixRead(){
 static uint8_t X=0;
