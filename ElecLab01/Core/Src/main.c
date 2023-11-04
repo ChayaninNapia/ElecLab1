@@ -79,7 +79,9 @@ void ButtonMatrixRead();
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int plus1(n){
+	return n+1;
+}
 /* USER CODE END 0 */
 
 /**
@@ -133,18 +135,18 @@ int main(void)
 			ButtonMatrixRead();
 		}
 		top++;
-		myArray[top] = 8;
+		myArray[top] = 1;
 
 
 	}
-	  else if (ButtonState == 4) {
+	  else if (ButtonState == 512) {
 	  		num = 0;
-	  		while(ButtonState == 4){
+	  		while(ButtonState == 512){
 	  					ButtonMatrixRead();
 	  				}
+	  		top++;
+	  		myArray[top] = 2;
 
-	  		myArray[top] = 0;
-	  		top--;
 
 	  	}
 	  }
