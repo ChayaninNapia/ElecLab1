@@ -23,6 +23,27 @@
 UART_HandleTypeDef hlpuart1;
 
 /* USER CODE BEGIN PV */
+struct _ButMtx_Struct
+{
+GPIO_TypeDef* Port;
+uint16_t Pin;
+};
+
+struct _ButMtx_Struct BMX_L[4] = {
+{GPIOA,GPIO_PIN_9},
+{GPIOC,GPIO_PIN_7},
+{GPIOB,GPIO_PIN_6},
+{GPIOA,GPIO_PIN_7}
+};
+
+struct _ButMtx_Struct BMX_R[4] = {
+{GPIOB,GPIO_PIN_5},
+{GPIOB,GPIO_PIN_4},
+{GPIOB,GPIO_PIN_10},
+{GPIOA,GPIO_PIN_8}
+};
+
+uint16_t ButtonState = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -30,6 +51,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_LPUART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
+void ButtonMatrixRead();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -63,7 +85,6 @@ int main(void)
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  int kuay = 30;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -71,9 +92,14 @@ int main(void)
   while (1)
    {
     /* USER CODE END WHILE */
-	  kuay++;
-	  HAL_Delay(1000);
+	  static uint32_t BTMX_TimeStamp = 0;
+	  if(HAL_GetTick() > BTMX_TimeStamp)
+	  {
+	  BTMX_TimeStamp = HAL_GetTick() + 25; //next scan in 25 ms
+	  ButtonMatrixRead();
+	  }
     /* USER CODE BEGIN 3 */
+
    }
     /* USER CODE END WHILE */
 
@@ -251,6 +277,27 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/* USER CODE BEGIN 4 */
+void ButtonMatrixRead(){
+static uint8_t X=0;
+for(int i=0; i<4; i++)
+{
+if(HAL_GPIO_ReadPin(BMX_L[i].Port, BMX_L[i].Pin) == GPIO_PIN_RESET)
+{ //ปุ่มถูกกด
+ButtonState |= 1 << (i + (X * 4));
+}
+else
+{
+ButtonState &= ~(1 << (i + (X * 4)));
+}
+}
+//set currentL to Hi-z (open drain)
+HAL_GPIO_WritePin(BMX_R[X].Port, BMX_R[X].Pin, GPIO_PIN_SET);
+//set nextL to low
+uint8_t nextX = (X + 1) % 4;
+HAL_GPIO_WritePin(BMX_R[nextX].Port, BMX_R[nextX].Pin, GPIO_PIN_RESET);
+X = nextX;
+}
 /* USER CODE END 4 */
 
 /**
