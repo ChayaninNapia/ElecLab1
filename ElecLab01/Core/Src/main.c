@@ -65,7 +65,8 @@ struct _ButMtx_Struct BMX_R[4] = {
 
 uint16_t ButtonState = 0;
 uint16_t num = 0;
-uint16_t myArray[11] = {0,0,0,0,0,0,0,0,1};
+uint16_t myArray[11] = {0,0,0,0,0,0,0,0,0};
+int top = -1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -125,12 +126,25 @@ int main(void)
 	  {
 	  BTMX_TimeStamp = HAL_GetTick() + 25; //next scan in 25 ms
 	  ButtonMatrixRead();
-	  if (ButtonState == 1) {
+	  if (ButtonState == 8) {
+
 		num = 1;
+		while(ButtonState == 8){
+			ButtonMatrixRead();
+		}
+		top++;
+		myArray[top] = 8;
+
 
 	}
-	  else if (ButtonState == 16) {
+	  else if (ButtonState == 4) {
 	  		num = 0;
+	  		while(ButtonState == 4){
+	  					ButtonMatrixRead();
+	  				}
+
+	  		myArray[top] = 0;
+	  		top--;
 
 	  	}
 	  }
