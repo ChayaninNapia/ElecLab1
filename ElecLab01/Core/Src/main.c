@@ -78,26 +78,7 @@ void ButtonMatrixRead();
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void shiftLeft(int array[], int size, int n) {
-    if (n < 0) {
-        printf("Invalid shift value. Shift value must be non-negative.\n");
-        return;
-    }
 
-    if (n >= size) {
-        printf("Shift value is greater than or equal to the array size. No change.\n");
-        return;
-    }
-
-    for (int i = 0; i < size - n; i++) {
-        array[i] = array[i + n];
-    }
-
-    // Fill the remaining elements with 0 (or you can choose another value)
-    for (int i = size - n; i < size; i++) {
-        array[i] = 0;
-    }
-}
 /* USER CODE END 0 */
 
 /**
