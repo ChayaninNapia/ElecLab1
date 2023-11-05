@@ -64,7 +64,7 @@ struct _ButMtx_Struct BMX_R[4] = {
 };
 
 uint16_t ButtonState = 0;
-uint16_t num = 0;
+int num = 0;
 uint16_t myArray[11] = {0,0,0,0,0,0,0,0,0};
 uint16_t password[11] = {9,0,0,0,0,5,0,4,3,5,6};
 int top = -1;
@@ -133,99 +133,99 @@ int main(void)
 	  GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
 	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, S);
 	  status = S;
-	  if (ButtonState == 8) {
-
-		num = 1;
-		while(ButtonState == 8){
+	  if (ButtonState != 0) {
+		  num = ButtonState;
+		while(ButtonState != 0){
 			ButtonMatrixRead();
 		}
 		top++;
-		myArray[top] = 0;
+//		num = ButtonState;
+		myArray[top] = num;
 
 
 	}
-	  else if (ButtonState == 4) {
-	  		num = 0;
-	  		while(ButtonState == 4){
-				ButtonMatrixRead();
-				}
-	  		top++;
-	  		myArray[top] = 1;
-
-
-	  	}
-	  else if(ButtonState == 64){
-
-		  while(ButtonState == 64)
-		  {
-			  ButtonMatrixRead();
-		  }
-		  top++;
-		  myArray[top] = 2;
-	  }
-	  else if(ButtonState == 1024){
-
-	  		  while(ButtonState == 1024)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 3;
-	  	  }
-	  else if(ButtonState == 2){
-
-	  		  while(ButtonState == 2)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 4;
-	  	  }
-	  else if(ButtonState == 32){
-
-	  		  while(ButtonState == 32)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 5;
-	  	  }
-	  else if(ButtonState == 512){
-
-	  		  while(ButtonState == 512)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 6;
-	  	  }
-	  else if(ButtonState == 1){
-
-	  		  while(ButtonState == 1)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 7;
-	  	  }
-	  else if(ButtonState == 16){
-
-	  		  while(ButtonState == 16)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 8;
-	  	  }
-	  else if(ButtonState == 256){
-
-	  		  while(ButtonState == 256)
-	  		  {
-	  			  ButtonMatrixRead();
-	  		  }
-	  		  top++;
-	  		  myArray[top] = 9;
-	  	  }
+//	  else if (ButtonState == 4) {
+//	  		num = 0;
+//	  		while(ButtonState == 4){
+//				ButtonMatrixRead();
+//				}
+//	  		top++;
+//	  		myArray[top] = 1;
+//
+//
+//	  	}
+//	  else if(ButtonState == 64){
+//
+//		  while(ButtonState == 64)
+//		  {
+//			  ButtonMatrixRead();
+//		  }
+//		  top++;
+//		  myArray[top] = 2;
+//	  }
+//	  else if(ButtonState == 1024){
+//
+//	  		  while(ButtonState == 1024)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 3;
+//	  	  }
+//	  else if(ButtonState == 2){
+//
+//	  		  while(ButtonState == 2)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 4;
+//	  	  }
+//	  else if(ButtonState == 32){
+//
+//	  		  while(ButtonState == 32)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 5;
+//	  	  }
+//	  else if(ButtonState == 512){
+//
+//	  		  while(ButtonState == 512)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 6;
+//	  	  }
+//	  else if(ButtonState == 1){
+//
+//	  		  while(ButtonState == 1)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 7;
+//	  	  }
+//	  else if(ButtonState == 16){
+//
+//	  		  while(ButtonState == 16)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 8;
+//	  	  }
+//	  else if(ButtonState == 256){
+//
+//	  		  while(ButtonState == 256)
+//	  		  {
+//	  			  ButtonMatrixRead();
+//	  		  }
+//	  		  top++;
+//	  		  myArray[top] = 9;
+//	  	  }
 	  else if(status == 0){
 
 		  while(status == 0)
