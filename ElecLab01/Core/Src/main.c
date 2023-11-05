@@ -66,11 +66,12 @@ struct _ButMtx_Struct BMX_R[4] = {
 
 uint16_t ButtonState = 0;
 uint16_t num = 0;
-uint16_t myArray[11] = {0,0,0,0,0,0,0,0,0};
+uint16_t myArray[11] = {6,5,3,4,0,5,0,0,0,0,9};
 uint16_t keys[11] = {7,4,1,0,8,5,2,9,9,6,3};
 uint16_t password[11] = {6,5,3,4,0,5,0,0,0,0,9};
 int top = -1;
 int status = 0;
+int ledState = 1;
 
 /* USER CODE END PV */
 
@@ -86,11 +87,14 @@ void ButtonMatrixRead();
 /* USER CODE BEGIN 0 */
 void setArr(uint16_t state){
 	int realnum = log2(state);
+
 	if(realnum == 7 || realnum == 11)
 		return;
 	top++;
 	myArray[top] = keys[realnum];
 }
+
+
 /* USER CODE END 0 */
 
 /**
@@ -123,7 +127,7 @@ int main(void)
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0,GPIO_PIN_RESET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -139,8 +143,8 @@ int main(void)
 	  BTMX_TimeStamp = HAL_GetTick() + 25; //next scan in 25 ms
 	  ButtonMatrixRead();
 	  GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
-	  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, S);
-	  	  status = S;
+//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, ledState);
+	  status = S;
 	  if (ButtonState != 0) {
 		  setArr(ButtonState);
 		while(ButtonState != 0)
