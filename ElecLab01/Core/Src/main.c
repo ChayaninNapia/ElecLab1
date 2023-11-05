@@ -60,7 +60,7 @@ struct _ButMtx_Struct BMX_R[4] = {
 {GPIOB,GPIO_PIN_5},
 {GPIOB,GPIO_PIN_4},
 {GPIOB,GPIO_PIN_10},
-{GPIOA,GPIO_PIN_8}
+//{GPIOA,GPIO_PIN_8}
 };
 
 uint16_t ButtonState = 0;
@@ -154,16 +154,16 @@ int main(void)
 //	  GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
 	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, !status);
 //	  status = S;
-	  if (ButtonState != 0 && ButtonState != 2048 ) {
-		  setArr(ButtonState);
-		while(ButtonState != 0)
-		{
-			ButtonMatrixRead();
-		}
-	  }
-	  if(ButtonState == 2048){
-		  check();
-	  }
+//	  if (ButtonState != 0 && ButtonState != 2048 ) {
+//		  setArr(ButtonState);
+//		while(ButtonState != 0)
+//		{
+//			ButtonMatrixRead();
+//		}
+//	  }
+//	  if(ButtonState == 2048){
+//		  check();
+//	  }
 //		else if(status == 0){
 //			while(status == 0){
 //				GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
@@ -370,6 +370,15 @@ for(int i=0; i<4; i++)
 if(HAL_GPIO_ReadPin(BMX_L[i].Port, BMX_L[i].Pin) == GPIO_PIN_RESET)
 { //�?ุ�?มถู�?�?ด
 ButtonState |= 1 << (i + (X * 4));
+setArr(ButtonState);
+if(ButtonState == 2048){
+		  check();
+		  return;
+}
+while(HAL_GPIO_ReadPin(BMX_L[i].Port, BMX_L[i].Pin) == GPIO_PIN_RESET)
+	  		{
+
+	  		}
 }
 else
 {
@@ -379,7 +388,7 @@ ButtonState &= ~(1 << (i + (X * 4)));
 //set currentL to Hi-z (open drain)
 HAL_GPIO_WritePin(BMX_R[X].Port, BMX_R[X].Pin, GPIO_PIN_SET);
 //set nextL to low
-uint8_t nextX = (X + 1) % 4;
+uint8_t nextX = (X + 1) % 3;
 HAL_GPIO_WritePin(BMX_R[nextX].Port, BMX_R[nextX].Pin, GPIO_PIN_RESET);
 X = nextX;
 }
