@@ -67,6 +67,7 @@ uint16_t ButtonState = 0;
 uint16_t num = 0;
 uint16_t myArray[11] = {0,0,0,0,0,0,0,0,0};
 int top = -1;
+int status = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,9 +80,7 @@ void ButtonMatrixRead();
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int plus1(n){
-	return n+1;
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -129,6 +128,7 @@ int main(void)
 	  {
 	  BTMX_TimeStamp = HAL_GetTick() + 25; //next scan in 25 ms
 	  ButtonMatrixRead();
+	  }
 	  if (ButtonState == 8) {
 
 		num = 1;
@@ -159,7 +159,10 @@ int main(void)
 		  top++;
 		  myArray[top] = 3;
 	  }
-	  }
+	  GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, S);
+
+
   }
   /* USER CODE END 3 */
 }
@@ -348,7 +351,7 @@ static uint8_t X=0;
 for(int i=0; i<4; i++)
 {
 if(HAL_GPIO_ReadPin(BMX_L[i].Port, BMX_L[i].Pin) == GPIO_PIN_RESET)
-{ //�?ุ�?มถู�?�?ด
+{ //�?ุ�?มถู�?�?ด
 ButtonState |= 1 << (i + (X * 4));
 }
 else
