@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <math.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -93,7 +92,17 @@ void setArr(uint16_t state){
 	top++;
 	myArray[top] = keys[realnum];
 }
-
+void check(){
+	for(int i = 0;i<11;i++)
+	{
+		if(myArray[i] != password[i]){
+			status = 0;
+			return;
+		}
+	}
+	status = 1;
+	return;
+}
 
 /* USER CODE END 0 */
 
@@ -127,7 +136,7 @@ int main(void)
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0,GPIO_PIN_SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -142,27 +151,30 @@ int main(void)
 	  {
 	  BTMX_TimeStamp = HAL_GetTick() + 25; //next scan in 25 ms
 	  ButtonMatrixRead();
-	  GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
-//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, ledState);
-	  status = S;
-	  if (ButtonState != 0) {
+//	  GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, !status);
+//	  status = S;
+	  if (ButtonState != 0 && ButtonState != 2048 ) {
 		  setArr(ButtonState);
 		while(ButtonState != 0)
 		{
 			ButtonMatrixRead();
 		}
 	  }
-		else if(status == 0){
-			while(status == 0){
-				GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
-				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, S);
-				status = S;
-			}
-			top = -1;
-			  for (int i = 0; i < 11; i++) {
-					myArray[i] = 0;
-				}
-		}
+	  if(ButtonState == 2048){
+		  check();
+	  }
+//		else if(status == 0){
+//			while(status == 0){
+//				GPIO_PinState S = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+//				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, S);
+//				status = S;
+//			}
+//			top = -1;
+//			  for (int i = 0; i < 11; i++) {
+//					myArray[i] = 0;
+//				}
+//		}
 
 
 
@@ -332,7 +344,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PA10 */
   GPIO_InitStruct.Pin = GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -370,6 +382,18 @@ HAL_GPIO_WritePin(BMX_R[X].Port, BMX_R[X].Pin, GPIO_PIN_SET);
 uint8_t nextX = (X + 1) % 4;
 HAL_GPIO_WritePin(BMX_R[nextX].Port, BMX_R[nextX].Pin, GPIO_PIN_RESET);
 X = nextX;
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+if(GPIO_Pin == GPIO_PIN_10)
+{
+			top = -1;
+			 for (int i = 0; i < 11; i++) {
+					myArray[i] = 0;
+				}
+			 status = 0;
+}
 }
 /* USER CODE END 4 */
 
